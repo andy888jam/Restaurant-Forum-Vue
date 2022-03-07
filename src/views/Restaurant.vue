@@ -1,6 +1,5 @@
 <template>
   <div class="container py-5">
-    <h1>餐廳描述頁</h1>
     <!-- 餐廳資訊頁 RestaurantDetail -->
     <RestaurantDetail :initial-restaurant="restaurant" />
     <hr />
@@ -8,12 +7,14 @@
     <RestaurantComments :restaurant-comments="restaurantComments"
     @after-delete-comment="afterDeleteComment" />
     <!-- 新增評論 CreateComment -->
+    <CreateComment :restaurant-id="restaurant.id" @after-create-comment="afterCreateComment" />
   </div>
 </template>
 
 <script>
 import RestaurantDetail from "./../components/RestaurantDetail";
 import RestaurantComments from "./../components/RestaurantComments";
+import CreateComment from "./../components/CreateComment";
 const dummyData = {
   restaurant: {
     id: 1,
@@ -59,6 +60,16 @@ const dummyData = {
   isFavorited: false,
   isLiked: false,
 };
+const dummyUser = {
+  currentUser: {
+    id: 1,
+    name: '管理者',
+    email: 'root@example.com',
+    image: 'https://i.pravatar.cc/300',
+    isAdmin: true
+  },
+  isAuthenticated: true
+}
 
 export default {
   name: "restaurant",
@@ -76,12 +87,14 @@ export default {
         isFavorited: false,
         isLiked: false,
       },
+      currentUser: dummyUser.currentUser,
       restaurantComments: [],
     };
   },
   components: {
     RestaurantDetail,
     RestaurantComments,
+    CreateComment
   },
   created() {
     const { id: restaurantId } = this.$route.params; //把id重新命名為restaurantId
@@ -120,6 +133,19 @@ export default {
       this.restaurantComments = this.restaurantComments.filter(
         comment => comment.id !== commentId
       )
+    },
+    afterCreateComment (payload) {
+      const {commentId, restaurantId, text} = payload
+      this.restaurantComments.push({
+        id: commentId,
+        RestaurantId: restaurantId,
+        User: {
+          id: this.currentUser.id,
+          name: this.currentUser.name
+        },
+        text,//text:text縮寫
+        createdAt: new Date()//js語法，直接抓當下時間
+      })
     }
   },
 };
