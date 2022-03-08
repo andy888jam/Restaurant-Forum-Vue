@@ -16,7 +16,7 @@
           <a href="#">
             <img
               class="card-img"
-              :src="restaurant.image"
+              :src="restaurant.image | emptyImage"
             >
           </a>
         </div>
@@ -59,6 +59,7 @@
 
 <script>
 import NavTabs from './../components/NavTabs'
+import { emptyImageFilter } from "./../utils/mixins";
 const dummyData = {
   "restaurants": [
         {
@@ -224,6 +225,7 @@ const dummyData = {
     ]
 }
 export default {
+  mixins: [emptyImageFilter],
   data() {
     return {
       restaurants: [],
