@@ -35,7 +35,12 @@
             style="display: contents"
             v-if="profile.id === currentUser.id"
           >
-            <button type="submit" class="btn btn-primary">edit</button>
+            <router-link
+              class="btn btn-primary"
+              :to="{ name: 'user-edit', params: { id: currentUser.id } }"
+            >
+              edit</router-link
+            >
           </form>
           <form
             action="/following/3"
