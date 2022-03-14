@@ -50,6 +50,9 @@
 </template>
 
 <script>
+import { Toast } from "../utils/helpers";
+import authorizationAPI from "./../apis/authorization";
+
 export default {
   data() {
     return {
@@ -59,13 +62,37 @@ export default {
   },
   methods: {
     handleSubmit() {
-      const data = JSON.stringify({
-        email: this.email,
-        password: this.password,
-      });
-
-      // TODO: 向後端驗證使用者登入資訊是否合法
-      console.log("data", data);
+       // 如果 email 或 password 為空，直接擋住，不向後端發出請求， return 不繼續往後執行
+      if (!this.email || !this.password) {
+        Toast.fire({
+          icon: "warning",
+          title: "請填入帳號密碼",
+        });
+        return
+      }
+      //向後端發出請求
+      authorizationAPI
+        .signIn({
+          email: this.email,
+          password: this.password,
+        })
+        .then((response) => {
+          const { data } = response;
+          //拋出非狀態碼的錯誤
+          if (data.status !== "sucess") {
+            throw new Error(data.message);
+          }
+          //存取token至localStorage
+          localStorage.setItem("token", data.token);
+          this.$router.push("/restaurants");
+        })
+        .catch((error) => {
+          this.password = "";
+          Toast.fire({
+            icon: "warning",
+            title: "請確認您輸入了正確的帳號密碼",
+          });
+        });
     },
   },
 };
