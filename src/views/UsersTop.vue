@@ -4,7 +4,7 @@
     <h1 class="mt-5">美食達人</h1>
     <hr />
     <div class="row text-center">
-      <UserCard v-for="user in users" :key="user.id" :initial-user="user"/>
+      <UserCard v-for="user in users" :key="user.id" :initial-user="user" />
     </div>
   </div>
 </template>
@@ -12,50 +12,9 @@
 <script>
 import NavTabs from "./../components/NavTabs";
 import UserCard from "./../components/UserCard";
+import { Toast } from "./../utils/helpers";
+import usersAPI from "./../apis/users";
 
-const dummyUser = {
-  users: [
-    {
-      id: 1,
-      name: "root",
-      email: "root@example.com",
-      password: "$2a$10$/P/wdaPlDl250CUgKwtLH.FoFlGfxcjiuBzuGrLzcu9yJpSSUsWy6",
-      isAdmin: true,
-      image: null,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-    {
-      id: 2,
-      name: "user1",
-      email: "user1@example.com",
-      password: "$2a$10$R2DVPzWfQ2hsSn5snqyc4eEnOO81b.Z4S10I6UDqLBxOjOFGOeRji",
-      isAdmin: false,
-      image: null,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-    {
-      id: 3,
-      name: "user2",
-      email: "user2@example.com",
-      password: "$2a$10$XdQ8ClRmBfrajA.IvGzTzOFaBthX1guuIgQgJvifFJipXjQLK55Fa",
-      isAdmin: false,
-      image: null,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      Followers: [],
-      FollowerCount: 0,
-      isFollowed: false,
-    },
-  ],
-};
 export default {
   data() {
     return {
@@ -64,15 +23,30 @@ export default {
   },
   components: {
     NavTabs,
-    UserCard
+    UserCard,
   },
   created() {
-    this.fetchUsers();
+    this.fetchTopUsers();
   },
   methods: {
-    fetchUsers() {
-      const { users } = dummyUser;
-      this.users = users;
+    async fetchTopUsers() {
+      try {
+        const { data } = await usersAPI.getTopUsers();
+
+        this.users = data.users.map((user) => ({
+          id: user.id,
+          name: user.name,
+          image: user.image,
+          followerCount: user.FollowerCount,
+          isFollowed: user.isFollowed,
+        }));
+      } catch (error) {
+        console.log(error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得美食達人，請稍後再試",
+        });
+      }
     },
   },
 };

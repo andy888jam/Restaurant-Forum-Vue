@@ -60,6 +60,7 @@
 <script>
 import NavTabs from './../components/NavTabs'
 import { emptyImageFilter } from "./../utils/mixins";
+
 const dummyData = {
   "restaurants": [
         {
