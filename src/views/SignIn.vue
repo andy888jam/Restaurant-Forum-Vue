@@ -34,7 +34,11 @@
         />
       </div>
 
-      <button class="btn btn-lg btn-primary btn-block mb-3" type="submit">
+      <button
+        class="btn btn-lg btn-primary btn-block mb-3"
+        :disabled="isProcessing"
+        type="submit"
+      >
         Submit
       </button>
 
@@ -58,41 +62,52 @@ export default {
     return {
       email: "",
       password: "",
+      //「處理中」屬性
+      isProcessing: false,
     };
   },
   methods: {
-    handleSubmit() {
-       // 如果 email 或 password 為空，直接擋住，不向後端發出請求， return 不繼續往後執行
-      if (!this.email || !this.password) {
-        Toast.fire({
-          icon: "warning",
-          title: "請填入帳號密碼",
-        });
-        return
-      }
-      //向後端發出請求
-      authorizationAPI
-        .signIn({
-          email: this.email,
-          password: this.password,
-        })
-        .then((response) => {
-          const { data } = response;
-          //拋出非狀態碼的錯誤
-          if (data.status !== "sucess") {
-            throw new Error(data.message);
-          }
-          //存取token至localStorage
-          localStorage.setItem("token", data.token);
-          this.$router.push("/restaurants");
-        })
-        .catch((error) => {
-          this.password = "";
+    //使用async
+    async handleSubmit() {
+      //async try
+      try {
+        // 如果 email 或 password 為空，直接擋住不向後端發出請求， return 不繼續往後執行
+        if (!this.email || !this.password) {
           Toast.fire({
             icon: "warning",
-            title: "請確認您輸入了正確的帳號密碼",
+            title: "請填入帳號密碼",
           });
+          return;
+        }
+        //處理中，避免使用者重複點擊
+        this.isProcessing = "true";
+
+        //向後端發出請求，非同步用await
+        const response = await authorizationAPI.signIn({
+          email: this.email,
+          password: this.password,
         });
+        console.log(response)
+        const { data } = response;
+        //拋出非狀態碼的錯誤
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        //存取token至localStorage
+        localStorage.setItem("token", data.token);
+        this.$router.push("/restaurants");
+        // 因為成功登入就會轉址，所以不用還原 isProcessing 的狀態
+        //async catch
+      } catch (error) {
+        this.password = "";
+        Toast.fire({
+          icon: "warning",
+          title: "請確認您輸入了正確的帳號密碼",
+        });
+        // 因為登入失敗，所以要把按鈕狀態還原
+        this.isProcessing = false;
+        console.log("error", error);
+      }
     },
   },
 };

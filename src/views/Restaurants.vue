@@ -28,280 +28,9 @@ import NavTabs from "./../components/NavTabs";
 import RestaurantCard from "./../components/RestaurantCard";
 import RestaurantsNavPills from "./../components/RestaurantsNavPills";
 import RestarantsPagination from "./../components/RestaurantsPagination";
+import restaurantsAPI from "./../apis/restaurants";
+import { Toast } from "./../utils/helpers";
 
-const dummyData = {
-  restaurants: [
-    {
-      id: 1,
-      name: "Whitney Kreiger III",
-      tel: "(960) 053-2333",
-      address: "27059 Padberg Estate",
-      opening_hours: "08:00",
-      description: "atque",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=46.25370848405821",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 1,
-      Category: {
-        id: 1,
-        name: "中式料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 2,
-      name: "Luella Vandervort",
-      tel: "1-323-694-6274 x83283",
-      address: "517 Rasheed Plaza",
-      opening_hours: "08:00",
-      description: "Distinctio sint voluptates perspiciatis rerum eaqu",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=21.4080966813458",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 2,
-      Category: {
-        id: 2,
-        name: "日本料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 3,
-      name: "Tressie Jakubowski",
-      tel: "(725) 558-1659",
-      address: "817 Alfred Bridge",
-      opening_hours: "08:00",
-      description: "culpa cum eum",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=69.6113196897054",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 5,
-      Category: {
-        id: 5,
-        name: "素食料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 4,
-      name: "Shanie Kerluke",
-      tel: "(063) 355-8159",
-      address: "519 Hank Islands",
-      opening_hours: "08:00",
-      description: "dicta consequatur in",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=91.6838604228705",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 3,
-      Category: {
-        id: 3,
-        name: "義大利料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 5,
-      name: "Sonya Schuppe",
-      tel: "(231) 448-7025 x416",
-      address: "0516 Parisian Spurs",
-      opening_hours: "08:00",
-      description: "corrupti velit pariatur",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=27.732834534256924",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 3,
-      Category: {
-        id: 3,
-        name: "義大利料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 6,
-      name: "Cornelius Klocko",
-      tel: "(886) 281-1351 x9054",
-      address: "940 Frami Canyon",
-      opening_hours: "08:00",
-      description: "dolores quis omnis",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=75.30120666619766",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 3,
-      Category: {
-        id: 3,
-        name: "義大利料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 7,
-      name: "Margaret Leannon III",
-      tel: "519-565-3972 x70443",
-      address: "77419 Reichert Park",
-      opening_hours: "08:00",
-      description: "Aut aperiam qui quo.\nInventore quia ullam adipisci",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=95.32509263101944",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 5,
-      Category: {
-        id: 5,
-        name: "素食料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 8,
-      name: "Lilly Boyer",
-      tel: "318.065.6782 x502",
-      address: "534 Kris Mission",
-      opening_hours: "08:00",
-      description: "Voluptatem mollitia est.",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=61.57695748512124",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 4,
-      Category: {
-        id: 4,
-        name: "墨西哥料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 9,
-      name: "Mrs. Adrianna Botsford",
-      tel: "253-201-1504",
-      address: "705 Broderick Lock",
-      opening_hours: "08:00",
-      description: "Fuga deserunt voluptatem ex culpa incidunt sapient",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=33.92530051772955",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 1,
-      Category: {
-        id: 1,
-        name: "中式料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-    {
-      id: 10,
-      name: "Verner Haag III",
-      tel: "609-142-7630 x028",
-      address: "57624 Ferry Crescent",
-      opening_hours: "08:00",
-      description: "Et eius qui quam. Ipsa blanditiis earum in tempori",
-      image:
-        "https://loremflickr.com/320/240/restaurant,food/?random=28.560855911253704",
-      viewCounts: 0,
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-      CategoryId: 1,
-      Category: {
-        id: 1,
-        name: "中式料理",
-        createdAt: "2022-02-04T07:34:41.000Z",
-        updatedAt: "2022-02-04T07:34:41.000Z",
-      },
-      isFavorited: false,
-      isLiked: false,
-    },
-  ],
-  categories: [
-    {
-      id: 1,
-      name: "中式料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 2,
-      name: "日本料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 3,
-      name: "義大利料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 4,
-      name: "墨西哥料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 5,
-      name: "素食料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 6,
-      name: "美式料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-    {
-      id: 7,
-      name: "複合式料理",
-      createdAt: "2022-02-04T07:34:41.000Z",
-      updatedAt: "2022-02-04T07:34:41.000Z",
-    },
-  ],
-  page: 1,
-  totalPage: [1, 2, 3, 4, 5],
-  prev: 1,
-  next: 2,
-  categoryId: "",
-};
 export default {
   data() {
     return {
@@ -321,27 +50,51 @@ export default {
     RestarantsPagination,
   },
   created() {
-    this.fetchRestaurants();
+    const { page = "", categoryId = "" } = this.$route.query;
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId });
+  },
+  // 使用 beforeRouteUpdate 方法取得使用者路由變化
+  beforeRouteUpdate(to, from, next) {
+    console.log("to", to);
+    console.log("from", from);
+    //不賦予空值的話會預設undefine就拉不回資料
+    const { page = "", categoryId = "" } = to.query;
+    this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId });
+    //next表示繼續往下
+    next();
   },
   methods: {
-    fetchRestaurants() {
-      //解構賦值
-      const {
-        restaurants,
-        categories,
-        categoryId,
-        page,
-        totalPage,
-        prev,
-        next,
-      } = dummyData;
-      this.restaurants = restaurants;
-      this.categories = categories;
-      this.categoryId = categoryId;
-      this.currentPage = page;
-      this.totalPage = totalPage;
-      this.previousPage = prev;
-      this.nextPage = next;
+    async fetchRestaurants({ queryPage, queryCategoryId }) {
+      try {
+        const response = await restaurantsAPI.getRestaurants({
+          page: queryPage,
+          categoryId: queryCategoryId,
+        });
+        //解構賦值
+        const {
+          restaurants,
+          categories,
+          categoryId,
+          page,
+          totalPage,
+          prev,
+          next,
+        } = response.data;
+        // 將從伺服器取得的 data 帶入 Vue 內
+        this.restaurants = restaurants;
+        this.categories = categories;
+        this.categoryId = categoryId;
+        this.currentPage = page;
+        this.totalPage = totalPage;
+        this.previousPage = prev;
+        this.nextPage = next;
+        console.log("response", response);
+      } catch (error) {
+        Toast.fire({
+          icon: "error",
+          title: "無法取得餐廳資料，請稍候再試",
+        });
+      }
     },
   },
 };

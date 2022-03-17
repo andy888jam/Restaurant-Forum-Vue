@@ -88,7 +88,7 @@ export default {
     this.fetchRestaurant(restaurantId);
   },
   methods: {
-    fetchRestaurant(restaurantId) {
+    fetchRestaurant() {
       const { restaurant } = dummyData;
       const {
         id,

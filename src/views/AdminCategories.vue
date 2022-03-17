@@ -149,7 +149,7 @@ export default {
         nameCached: "",
       }));
     },
-    createCategory(e) {
+    createCategory() {
       //TODO：透過API告知伺服器欲新增的餐廳類別
       //將新的類別添加至陣列中
       this.categories.push({
@@ -177,7 +177,7 @@ export default {
         return category;
       });
     },
-    updateCategory({ categoryId, name }) {
+    updateCategory({ categoryId }) {
       // TODO: 透過 API 去向伺服器更新餐廳類別名稱
       this.toggleIsEditing(categoryId);
     },
