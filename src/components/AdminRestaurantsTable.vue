@@ -25,7 +25,7 @@
           <router-link
             :to="{
               name: 'admin-restaurant-edit',
-              params: { id: restaurant.id }
+              params: { id: restaurant.id },
             }"
             class="btn btn-link"
             >Edit</router-link
@@ -45,6 +45,9 @@
 </template>
 
 <script>
+import adminAPI from "./../apis/admin";
+import { Toast } from "./../utils/helpers";
+
 const dummyData = {
   restaurants: [
     {
@@ -1083,13 +1086,34 @@ export default {
     this.fetchRestaurants();
   },
   methods: {
-    fetchRestaurants() {
-      this.restaurants = dummyData.restaurants;
+    async fetchRestaurants() {
+      try {
+        const { data } = await adminAPI.restaurants.get();
+        this.restaurants = data.restaurants;
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法取得餐廳清單，請稍後再試",
+        });
+      }
     },
-    deleteRestaurants(restaurantId) {
-      this.restaurants = this.restaurants.filter(
-        (restaurant) => restaurant.id !== restaurantId
-      );
+    async deleteRestaurants(restaurantId) {
+      try {
+        const { data } = await adminAPI.restaurants.delete({ restaurantId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+        this.restaurants = this.restaurants.filter(
+          (restaurant) => restaurant.id !== restaurantId
+        );
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "無法刪除餐廳，請稍後再試",
+        });
+      }
     },
   },
 };

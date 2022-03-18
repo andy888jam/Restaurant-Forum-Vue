@@ -63,7 +63,7 @@
 
 <script>
 import { emptyImageFilter } from "./../utils/mixins";
-import { apiHelper, Toast } from "./../utils/helpers";
+import { Toast } from "./../utils/helpers";
 import usersAPI from "./../apis/users";
 
 export default {

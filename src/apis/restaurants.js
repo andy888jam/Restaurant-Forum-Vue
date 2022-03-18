@@ -16,5 +16,20 @@ export default {
     return apiHelper.get(`/restaurants/feeds`,{ headers: {
       Authorization: `Bearer ${getToken()}`}
     }) 
+  },
+  getTopRestaurants() {
+    return apiHelper.get('/restaurants/top', { headers: {
+      Authorization: `Bearer ${getToken()}`}
+    })
+  },
+  addFavorite() {
+    return apiHelper.post('/restaurants/top', null, { headers: {
+      Authorization: `Bearer ${getToken()}`}
+    })
+  },
+  deleteFavorite() {
+    return apiHelper.delete('/restaurants/top', { headers: {
+      Authorization: `Bearer ${getToken()}`}
+    })
   }
 }
