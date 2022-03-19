@@ -128,6 +128,17 @@ export default {
       default: false,
     },
   },
+  //父元件還沒拉回API，就已經渲染畫面，故需要用watch監聽
+  watch: {
+    initialRestaurant(newValue) {
+      this.restaurant = {
+        //先確保有預設值
+        ...this.restaurant,
+        //再覆蓋更新值
+        ...newValue,
+      };
+    },
+  },
   data() {
     return {
       restaurant: {
