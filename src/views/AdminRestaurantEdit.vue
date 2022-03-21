@@ -44,6 +44,7 @@ export default {
     next();
   },
   methods: {
+    //抓取已帶有資料的餐廳
     async fetchRestaurant(restaurantId) {
       try {
         const { data } = await adminAPI.restaurants.getDetail({ restaurantId });

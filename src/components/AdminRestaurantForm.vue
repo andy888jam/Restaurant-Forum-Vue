@@ -204,6 +204,7 @@ export default {
       }
 
       const form = e.target;
+      console.log(e)
       const formData = new FormData(form);
       this.$emit("after-submit", formData);
     },

@@ -9,5 +9,9 @@ export default {
       email,
       password
     })
-  }
+  },
+  //再確認
+    signUp (data) {
+      return apiHelper.post('/signup', {...data})
+    },
 }

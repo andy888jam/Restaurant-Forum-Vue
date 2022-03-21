@@ -39,10 +39,6 @@ export default {
           title: "無法建立餐廳，請稍候再試",
         });
       }
-      //todo發送ＡＰＩ
-      for (let [name, value] of formData.entries()) {
-        console.log(name + ":" + value);
-      }
     },
   },
 };
