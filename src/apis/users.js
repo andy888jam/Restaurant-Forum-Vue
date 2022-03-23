@@ -23,6 +23,18 @@ export default {
       Authorization: `Bearer ${getToken()}`}
     })
   },
+  //只需要驗證該 token 是否有效，並取得登入者的資訊，不需要完整的 user profile 
+  getCurrentUser () {
+    return apiHelper.get(`/get_current_user`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
+  //完整的 user profile 
+  get ({ userId }) {
+    return apiHelper.get(`/users/${userId}`, {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    })
+  },
   getTopUsers() {
     return apiHelper.get('/users/top', { headers: {
       Authorization: `Bearer ${getToken()}`}

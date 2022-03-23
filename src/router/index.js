@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import NotFound from '../views/NotFound.vue'
 import SignIn from '../views/SignIn.vue'
 import Restaurants from '../views/Restaurants.vue'
+//先 import Vuex 的設定檔
+import store from './../store'
 
 Vue.use(VueRouter)
 
@@ -58,7 +60,7 @@ const routes = [
     component: () => import('../views/UserEdit.vue')
   },
   {
-    path: '/user',
+    path: '/user/:id',
     name: 'user',
     component: () => import('../views/User.vue')
   },
@@ -107,6 +109,13 @@ const routes = [
 const router = new VueRouter({
   linkExactActiveClass: 'active',
   routes
+})
+
+//每次路由切換時，都會先進入 beforeEach 這個方法
+router.beforeEach((to, from, next) => {
+  // 使用 dispatch 呼叫 Vuex 內的 actions
+  store.dispatch('fetchCurrentUser')
+  next()
 })
 
 export default router

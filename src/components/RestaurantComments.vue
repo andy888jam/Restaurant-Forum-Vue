@@ -13,7 +13,7 @@
           Delete
         </button>
         <h3>
-          <router-link :to="{name: 'user'}">
+          <router-link :to="{ name: 'user' }">
             {{ comment.User.name }}
           </router-link>
         </h3>
@@ -29,6 +29,8 @@
 
 <script>
 import { fromNowFilter } from "./../utils/mixins";
+import commentsAPI from "./../apis/comments";
+import { Toast } from "./../utils/helpers";
 
 const dummyUser = {
   currentUser: {
@@ -55,12 +57,23 @@ export default {
     };
   },
   methods: {
-    handleDeleteButtonClick(commentId) {
-      console.log('handleDeleteButtonClick', commentId)
-      // TODO: 請求 API 伺服器刪除 id 為 commentId 的評論
+    async handleDeleteButtonClick(commentId) {
+      console.log("handleDeleteButtonClick", commentId);
+      try {
+        const { data } = await commentsAPI.delete({ commentId });
+        if (data.status !== "success") {
+          throw new Error(data.message);
+        }
+      } catch (error) {
+        console.log("error", error);
+        Toast.fire({
+          icon: "error",
+          title: "刪除評論失敗，請稍候再試",
+        });
+      }
       //處發父層事件 $emit('事件名稱', 傳遞的資料) 子元件需要通知父元件去更新畫面的狀態
-      this.$emit('after-delete-comment', commentId)
-    }
-  }
+      this.$emit("after-delete-comment", commentId);
+    },
+  },
 };
 </script>

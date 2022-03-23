@@ -95,6 +95,10 @@ export default {
         }
         //存取token至localStorage
         localStorage.setItem("token", data.token);
+        //將資料傳到Vuex中
+        this.$store.commit('setCurrentUser', data.user)
+
+
         this.$router.push("/restaurants");
         // 因為成功登入就會轉址，所以不用還原 isProcessing 的狀態
         //async catch

@@ -17,13 +17,20 @@
     <div id="navbarSupportedContent" class="navbar-collapse collapse">
       <div class="ml-auto d-flex align-items-center">
         <!-- is user is admin -->
-        <router-link to="/admin/restaurants" class="text-white mr-3" v-if="currentUser.isAdmin">
+        <router-link
+          to="/admin/restaurants"
+          class="text-white mr-3"
+          v-if="currentUser.isAdmin"
+        >
           管理員後台
         </router-link>
 
         <!-- is user is login -->
         <template v-if="isAuthenticated">
-          <router-link :to="{ name: 'user' }" class="text-white mr-3">
+          <router-link
+            :to="{ name: 'user', params: { id: currentUser.id } }"
+            class="text-white mr-3"
+          >
             {{ currentUser.name || "使用者" }} 您好
           </router-link>
           <button
@@ -39,43 +46,11 @@
 </template>
 
 <script>
-const dummyUser = {
-  currentUser: {
-    id: 1,
-    name: "管理者",
-    email: "root@example.com",
-    image: "https://i.pravatar.cc/300",
-    isAdmin: true,
-  },
-  isAuthenticated: true,
-};
+import { mapState } from "vuex";
 
 export default {
-  //沒資料時使用此預設值
-  data() {
-    return {
-      currentUser: {
-        id: -1,
-        name: "",
-        email: "",
-        image: "",
-        isAdmin: false,
-      },
-      isAuthenticated: false,
-    };
-  },
-  created() {
-    this.fetchUser();
-  },
-  methods: {
-    fetchUser() {
-      this.currentUser = {
-        //在 key 值相同時，dummyUser.currentUser 會覆蓋之前的資料
-        ...this.currentUser,
-        ...dummyUser.currentUser,
-      };
-      this.isAuthenticated = dummyUser.isAuthenticated;
-    },
+  computed: {
+    ...mapState(["currentUser", "isAuthenticated"]),
   },
 };
 </script>
