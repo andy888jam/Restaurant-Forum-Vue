@@ -14,6 +14,7 @@ const authorizeIsAdmin =  (to, from, next) => {
     next('/404')
     return
   }
+  next()
 }
 
 const routes = [
