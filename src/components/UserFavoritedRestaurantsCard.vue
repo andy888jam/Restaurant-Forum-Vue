@@ -25,15 +25,10 @@ import { emptyImageFilter } from "./../utils/mixins";
 export default {
   mixins: [emptyImageFilter],
   props: {
-    profile: {
-      type: Object,
+    favoritedRestaurants: {
+      type: Array,
       required: true,
     },
-  },
-  data() {
-    return {
-      favoritedRestaurants: this.profile.FavoritedRestaurants,
-    };
   },
 };
 </script>

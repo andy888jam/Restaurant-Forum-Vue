@@ -28,7 +28,7 @@
             action="/following/3"
             method="POST"
             style="display: contents"
-            v-if="!isCurrentUser"
+            v-if="isCurrentUser"
           >
             <router-link
               class="btn btn-primary"

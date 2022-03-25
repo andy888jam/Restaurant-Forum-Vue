@@ -16,15 +16,10 @@ import { emptyImageFilter } from "./../utils/mixins";
 export default {
   mixins: [emptyImageFilter],
   props: {
-    profile: {
-      type: Object,
+    followers: {
+      type: Array,
       required: true,
     },
-  },
-  data() {
-    return {
-      followers: this.profile.Followers,
-    };
   },
 };
 </script>
