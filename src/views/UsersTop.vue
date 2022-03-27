@@ -1,11 +1,14 @@
 <template>
   <div class="container py-5">
     <NavTabs />
-    <h1 class="mt-5">美食達人</h1>
-    <hr />
-    <div class="row text-center">
-      <UserCard v-for="user in users" :key="user.id" :initial-user="user" />
-    </div>
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <h1 class="mt-5">美食達人</h1>
+      <hr />
+      <div class="row text-center">
+        <UserCard v-for="user in users" :key="user.id" :initial-user="user" />
+      </div>
+    </template>
   </div>
 </template>
 
@@ -14,16 +17,19 @@ import NavTabs from "./../components/NavTabs";
 import UserCard from "./../components/UserCard";
 import { Toast } from "./../utils/helpers";
 import usersAPI from "./../apis/users";
+import Spinner from "./../components/Spinners.vue";
 
 export default {
   data() {
     return {
       users: [],
+      isLoading: true,
     };
   },
   components: {
     NavTabs,
     UserCard,
+    Spinner
   },
   created() {
     this.fetchTopUsers();
@@ -39,7 +45,9 @@ export default {
           followerCount: user.FollowerCount,
           isFollowed: user.isFollowed,
         }));
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error);
         Toast.fire({
           icon: "error",

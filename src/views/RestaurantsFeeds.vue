@@ -50,7 +50,6 @@ export default {
     async fetchFeeds() {
       try {
         const response = await restaurantsAPI.getFeeds();
-        console.log(response);
         const { restaurants, comments } = response.data;
         this.restaurants = restaurants;
         //comment.Restaurant和text不是null再回傳

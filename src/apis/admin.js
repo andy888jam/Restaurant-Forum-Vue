@@ -15,7 +15,7 @@ export default {
       return apiHelper.delete(`/admin/restaurants/${restaurantId}`)
     },
     update({restaurantId, formData}) {
-      return apiHelper.put(`/admin/restaurants/${restaurantId}`)
+      return apiHelper.put(`/admin/restaurants/${restaurantId}`, formData)
     },
   },
   categories: {
@@ -38,7 +38,7 @@ export default {
       return apiHelper.get('/admin/users')
     },
     update({userId, isAdmin}) {
-      return apiHelper.put(`/admin/users/${userId}`)
+      return apiHelper.put(`/admin/users/${userId}`, { isAdmin })
     }
   }
 }

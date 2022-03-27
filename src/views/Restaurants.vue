@@ -2,30 +2,38 @@
   <div class="container py-5">
     <NavTabs />
     <!-- 餐廳類別標籤 RestaurantsNavPills -->
-    <RestaurantsNavPills :categories="categories" />
-    <div class="row">
-      <!-- 餐廳卡片 RestaurantCard-->
-      <RestaurantCard
-        v-for="restaurant in restaurants"
-        :key="restaurant.id"
-        :initial-restaurant="restaurant"
-      />
-    </div>
+    <Spinner v-if="isLoading" />
+    <template v-else>
+      <RestaurantsNavPills :categories="categories" />
+      <div class="row">
+        <!-- 餐廳卡片 RestaurantCard-->
+        <RestaurantCard
+          v-for="restaurant in restaurants"
+          :key="restaurant.id"
+          :initial-restaurant="restaurant"
+        />
+      </div>
 
-    <!-- 分頁標籤 RestaurantPagination -->
-    <RestarantsPagination
-      :current-page="currentPage"
-      :total-page="totalPage"
-      :category-id="categoryId"
-      :previous-page="previousPage"
-      :next-page="nextPage"
-    />
+      <!-- 分頁標籤 RestaurantPagination -->
+      <RestarantsPagination
+        v-if="totalPage > 1"
+        :current-page="currentPage"
+        :total-page="totalPage"
+        :category-id="categoryId"
+        :previous-page="previousPage"
+        :next-page="nextPage"
+      />
+      <div v-if="restaurants.length < 1">
+        此類別目前無餐廳資料
+      </div>
+    </template>
   </div>
 </template>
 
 <script>
 import NavTabs from "./../components/NavTabs";
 import RestaurantCard from "./../components/RestaurantCard";
+import Spinner from "./../components/Spinners.vue";
 import RestaurantsNavPills from "./../components/RestaurantsNavPills";
 import RestarantsPagination from "./../components/RestaurantsPagination";
 import restaurantsAPI from "./../apis/restaurants";
@@ -41,6 +49,7 @@ export default {
       totalPage: [],
       previousPage: -1,
       nextPage: -1,
+      isLoading: true,
     };
   },
   components: {
@@ -48,6 +57,7 @@ export default {
     RestaurantCard,
     RestaurantsNavPills,
     RestarantsPagination,
+    Spinner,
   },
   created() {
     const { page = "", categoryId = "" } = this.$route.query;
@@ -55,8 +65,6 @@ export default {
   },
   // 使用 beforeRouteUpdate 方法取得使用者路由變化
   beforeRouteUpdate(to, from, next) {
-    console.log("to", to);
-    console.log("from", from);
     //不賦予空值的話會預設undefine就拉不回資料
     const { page = "", categoryId = "" } = to.query;
     this.fetchRestaurants({ queryPage: page, queryCategoryId: categoryId });
@@ -88,8 +96,9 @@ export default {
         this.totalPage = totalPage;
         this.previousPage = prev;
         this.nextPage = next;
-        console.log("response", response);
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         Toast.fire({
           icon: "error",
           title: "無法取得餐廳資料，請稍候再試",

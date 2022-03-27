@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     async handleDeleteButtonClick(commentId) {
-      console.log("handleDeleteButtonClick", commentId);
       try {
         const { data } = await commentsAPI.delete({ commentId });
         if (data.status !== "success") {

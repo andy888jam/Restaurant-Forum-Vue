@@ -6,7 +6,6 @@ export default {
     const searchParams = new URLSearchParams({page, categoryId})
     //第二個參數是 request 設定，這些設定需要打包成一個物件。在這個物件裡，需要放在 HTTP Header 裡的設定，可以用 headers 屬性來指定
     //再透過 URLSearchParams.toString() 來產生 queryString
-    console.log(searchParams.toString())
     return apiHelper.get(`/restaurants?${searchParams.toString()}`) 
   },
   getRestaurant ({ restaurantId }) {

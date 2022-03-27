@@ -25,7 +25,8 @@
         </div>
       </div>
     </form>
-    <table class="table">
+    <Spinner v-if="isLoading" />
+    <table class="table" v-else>
       <thead class="thead-dark">
         <tr>
           <th scope="col" width="60">#</th>
@@ -93,16 +94,19 @@
 import AdminNav from "@/components/AdminNav";
 import { Toast } from "./../utils/helpers";
 import adminAPI from "./../apis/admin";
+import Spinner from "./../components/Spinners.vue";
 
 export default {
   components: {
     AdminNav,
+    Spinner,
   },
   // 3. 定義 Vue 中使用的 data 資料
   data() {
     return {
       newCategoryName: "",
       categories: [],
+      isLoading: true,
     };
   },
   // 5. 調用 `fetchCategories` 方法
@@ -122,7 +126,9 @@ export default {
           isEditing: false,
           nameCached: "",
         }));
+        this.isLoading = false;
       } catch (error) {
+        this.isLoading = false;
         console.log(error, "error");
         Toast.fire({
           icon: "error",
@@ -178,7 +184,6 @@ export default {
     //更新編輯
     async updateCategory({ categoryId, name }) {
       try {
-        console.log(name);
         const { data } = await adminAPI.categories.update({ categoryId, name });
         // TODO: 透過 API 去向伺服器更新餐廳類別名稱
         if (data.status !== "success") {
