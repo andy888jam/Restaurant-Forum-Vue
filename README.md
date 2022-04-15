@@ -1,6 +1,6 @@
 # forum-front-end-vue
 To log in:
-email:root@example.com / password:12345678
+email: root@example.com / password: 12345678
 
 ## Project setup
 ```
